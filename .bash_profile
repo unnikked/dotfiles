@@ -1,0 +1,68 @@
+JAVA_LIB_PATH=~/Dropbox/Programming/Java/lib
+JAVA_APACHE_LIB_PATH=$JAVA_LIB_PATH/apache
+
+CLASSPATH=.:./bin:jrisk/server/lib/mysql-connector-java-5.1.24-bin.jar:/home/nicola/Dropbox/Programming/Java/BitBucket/jrisk/jrisk/client/lib/jfxrt.jar:$JAVA_LIB_PATH/jgrapht-0.8.3/jgrapht-jdk1.6.jar:$JAVA_APACHE_LIB_PATH/commons-math3-3.2/commons-math3-3.2.jar:$JAVA_APACHE_LIB_PATH/commons-net-3.3/commons-net-3.3.jar:$JAVA_LIB_PATH/org.json/org.json.jar:$JAVA_APACHE_LIB_PATH/commons-io-2.4/commons-io-2.4.jar:
+export CLASSPATH
+
+PATH=$PATH:$HOME/.myapp/omnetpp-4.3.1/bin
+export PATH
+
+export TCL_LIBRARY=/usr/share/tcltk/tcl8.5
+
+# Prompt
+# for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done   
+c_lg="\[\033[38;5;141m\]" # lines command ok
+c_lf="\[\033[38;5;196m\]" # lines command fail
+c_us="\[\033[38;5;106m\]" # user
+c_at="\[\033[38;5;111m\]" # at symbol @
+c_ho="\[\033[38;5;167m\]" # host
+c_wd="\[\033[38;5;220m\]" # working directory
+c_ru="\[\033[38;5;118m\]" # regular user
+c_su="\[\033[38;5;196m\]" # root user
+c_xx="\[\e[0m\]" # reset
+# truncated working directory
+twd() {
+    local result=$PWD
+    local dynamic="`whoami`$HOSTNAME" # for calculating max pwd length
+    local len_extra_chars=5 # length of misc characters and spaces on first line
+    local len_term=${COLUMNS:-80} # if no variable $COLUMNS use 80
+    local len_max_pwd=$((len_term-$len_extra_chars-${#dynamic}))
+    local difference=$((len_max_pwd - ${#result}))
+    # no need to continue if truncation unnecessary
+    if [ "$difference" -gt "0" ]
+    then
+        echo "$result"
+        return
+    fi
+    local old_ifs=$IFS
+    local IFS="/"
+    local longest=''
+    # find longest dir in working directory (within first line)
+    for x in ${result:0:$len_max_pwd}
+    do
+        if [ "${#x}" -gt "${#longest}" ]
+        then
+            longest=$x
+        fi
+    done
+    local IFS=$old_ifs
+    # find position of longest dir
+    local str_pos=0
+    while [ "$str_pos" -lt "${#result}" ]
+    do
+        if [ "${result:$str_pos:${#longest}}" == "$longest" ]
+        then
+            local trunc_end=$((str_pos+6+($difference*-1)))
+            result=${result:0:$((str_pos+3))}...${result:$trunc_end}
+            break
+        fi
+        ((str_pos++))
+    done
+    echo "$result"
+}
+get_ps1() {
+    [ $? -eq 0 ] && c_ln="${c_lg}" || c_ln="${c_lf}"
+    (( EUID == 0 )) && chr_usr="${c_su}#" || chr_usr="${c_ru}$"
+    PS1="${c_ln}┌[${c_us}\u${c_at}@${c_ho}\h ${c_wd}$(twd)${c_ln}]\n${c_ln}└${chr_usr}${c_xx} "
+}
+PROMPT_COMMAND=get_ps1
