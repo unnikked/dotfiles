@@ -25,6 +25,15 @@ function killps() {   # kill by process name
     done
 }
 
+function notify() {
+	if [ $# -ne 2 ]; then
+		echo "USAGE: $0 \"command\" \"message\""
+	fi
+
+	$1
+	notify-send "$2"
+}
+
 #extract all archives!
 function extract () {
    if [ -f $1 ] ; then
