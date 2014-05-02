@@ -137,3 +137,47 @@ function ask() {
         *) return 1 ;;
     esac
 }
+
+# Cloud Flare DNS Manager
+# Check https://github.com/unnikked/cloudflare-dns-manager
+CLOUDFLARE_EMAIL="your@email.com"
+CLOUDFLARE_KEY="yourapikey"
+
+function dns-create() {
+    if [ $# -lt 4 ]; then
+        echo "USAGE $0 [domain] [type] [zone_name] [service_mode] (ip address)"
+        return 1;
+    fi
+
+    if [ $# -eq 5 ]; then
+        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "CREATE" $1 $2 $3 $4 $5
+    else
+        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "CREATE" $1 $2 $3 $4 
+    fi
+}
+
+function dns-modify() {
+    if [ $# -lt 4 ]; then
+        echo "USAGE $0 [domain] [type] [zone_name] [service_mode] (ip address)"
+        return 1;
+    fi
+
+    if [ $# -eq 5 ]; then
+        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "MODIFY" $1 $2 $3 $4 $5
+    else
+        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "MODIFY" $1 $2 $3 $4 
+    fi
+}
+
+function dns-delete() {
+    if [ $# -lt 4 ]; then
+        echo "USAGE $0 [domain] [type] [zone_name] [service_mode] (ip address)"
+        return 1;
+    fi
+
+    if [ $# -eq 5 ]; then
+        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "DELETE" $1 $2 $3 $4 $5
+    else
+        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "DELETE" $1 $2 $3 $4 
+    fi
+}

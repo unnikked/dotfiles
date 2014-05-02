@@ -41,6 +41,7 @@ alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.ar
 alias list-sockets='lsof -i' # List Sockets in use
 alias list-open-ports='netstat -tulanp' 
 alias list-tcp-open-ports='netstat -anop | grep -i list | grep tcp'
+alias get-ip="resolveip -s "$1""
 
 # Sysadmin utils
 alias apache2-logs="tail /var/log/apache2/error.log | less"
