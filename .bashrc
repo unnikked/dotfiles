@@ -26,4 +26,4 @@ man() {
 }
 
 # Whatis ?
-echo "Did you know that:"; whatis $(ls /bin | shuf -n 1)
+echo "Did you know that:"; whatis $(\ls /bin | shuf -n 1)
