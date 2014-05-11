@@ -1,5 +1,8 @@
+#!/bin/bash
+
 ## SHELL UTILS
-alias re_rc='source ~/.bashrc'
+alias rebash='source ~/.bashrc'
+alias timestamp="date +'%s'"
 
 # shell commands
 alias ls='ls --color=always -F --group-directories-first'

@@ -140,8 +140,6 @@ function ask() {
 
 # Cloud Flare DNS Manager
 # Check https://github.com/unnikked/cloudflare-dns-manager
-CLOUDFLARE_EMAIL="your@email.com"
-CLOUDFLARE_KEY="yourapikey"
 
 function dns-create() {
     if [ $# -lt 4 ]; then
