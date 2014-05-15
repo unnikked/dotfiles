@@ -127,7 +127,7 @@ function java-compile() {
     
 
 function sprunge() {
-	cat $1 | curl -F 'sprunge=<-' http://sprunge.us
+	\cat $1 | curl -F 'sprunge=<-' http://sprunge.us
 }
 
 function ask() {
@@ -178,4 +178,31 @@ function dns-delete() {
     else
         dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "DELETE" $1 $2 $3 $4 
     fi
+}
+
+#
+
+function count-bash-lines() { # prototipe
+    if [ $# -ne 1 ]; then
+        echo "USAGE $0 [file.sh]"
+        return 1;
+    fi
+
+    calc $(\cat "$1" | wc -l) - $(\cat "$1" | egrep "^#" | wc -l)
+    return 0
+}
+
+function speak() {
+    if [ $# -ne 2 ]; then
+        echo "USAGE $0 [message] [language]"
+        return 1
+    fi
+
+    local player='mpg123 -q -'
+    #player='mplayer -really-quiet -cache 8192 -'
+    curl -s --user-agent "Mozilla/5.0" -G \
+        --data-urlencode "q=$1" --data-urlencode "tl=${2:en}" \
+        http://translate.google.com/translate_tts \
+        | $player #&
+    return $?
 }
