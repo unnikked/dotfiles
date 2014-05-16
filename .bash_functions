@@ -206,3 +206,20 @@ function speak() {
         | $player #&
     return $?
 }
+
+# ORIGINAL http://www.reddit.com/r/bash/comments/245t3e/sharing_useful_functions/ch3zfbg
+function battery(){ 
+    local CAPACITY="$(cat /sys/class/power_supply/BAT0/capacity)%"
+
+    case "$(cat /sys/class/power_supply/BAT0/status)" in
+        Discharging)
+            echo "$CAPACITY discharging"
+            ;;
+        Charging)
+            echo "$CAPACITY charging"
+            ;;
+        *)
+            echo "Fully charged - $CAPACITY"
+            ;;
+    esac
+}
