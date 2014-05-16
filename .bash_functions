@@ -210,16 +210,20 @@ function speak() {
 # ORIGINAL http://www.reddit.com/r/bash/comments/245t3e/sharing_useful_functions/ch3zfbg
 function battery(){ 
     local CAPACITY="$(cat /sys/class/power_supply/BAT0/capacity)%"
+    local TIME=$(upower --show-info /org/freedesktop/UPower/devices/battery_BAT0 | grep --color=always "time to \(full\|empty\)")
 
-    case "$(cat /sys/class/power_supply/BAT0/status)" in
+    case "$(\cat /sys/class/power_supply/BAT0/status)" in
         Discharging)
-            echo "$CAPACITY discharging"
+            echo "Discharging ~ $CAPACITY"
+	    echo "$TIME" | trim
             ;;
         Charging)
-            echo "$CAPACITY charging"
+            echo "Charging ~ $CAPACITY"
+	    echo "$TIME" | trim
             ;;
         *)
-            echo "Fully charged - $CAPACITY"
+            echo "Fully charged ~ $CAPACITY"
+	    echo "$TIME" | trim
             ;;
     esac
 }
