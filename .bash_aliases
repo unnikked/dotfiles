@@ -8,6 +8,7 @@ alias timestamp="date +'%s'"
 alias ls='ls --color=always -F --group-directories-first'
 alias lo="ls -lha --color=always -F --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\"%0o \",k);print}'"
 alias ll='ls -lhA'
+alias tree='tree -ahF -C'
 alias find-here="find . -name "
 alias df="df -Tha --total"
 alias du="du -ach | sort -h"
