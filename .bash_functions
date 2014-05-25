@@ -152,6 +152,7 @@ function dns-create() {
     else
         dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "CREATE" $1 $2 $3 $4 
     fi
+    return $?
 }
 
 function dns-modify() {
@@ -165,6 +166,7 @@ function dns-modify() {
     else
         dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "MODIFY" $1 $2 $3 $4 
     fi
+    return $?
 }
 
 function dns-delete() {
@@ -178,6 +180,17 @@ function dns-delete() {
     else
         dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "DELETE" $1 $2 $3 $4 
     fi
+    return $?
+}
+
+function dns-list-all() {
+    if [ $# -ne 1 ]; then
+        echo "USAGE $0 [domain]"
+        return 1;
+    fi
+
+    dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "LISTALL" $1 A a 0 "NONE"
+  	return $?
 }
 
 #
@@ -226,4 +239,31 @@ function battery(){
 	    echo "$TIME" | trim
             ;;
     esac
+}
+
+# Selfoss new articles notifyer
+
+function check_selfoss() {
+	local SELFOSS_TEMP=~/.selfoss
+	if [ ! -f $SELFOSS_TEMP ]; then 
+		echo "1322211600" > $SELFOSS_TEMP	
+	fi
+	local SELFOSS_LAST=$(\cat $SELFOSS_TEMP)
+	local RES=$(curl -s -GET "http://selfoss.unnikked.tk/items" \
+			-d "username=unnikked" \
+			-d "password=gli28bu74S" \
+			-d "type=unread" \
+			-d "items=200")
+	local SELFOSS_RES_ITEMS=$(echo "$RES" | jq '.[]')
+	echo $SELFOSS_RES_ITEMS
+	
+	for i in $(seq 200); do 
+		local SELFOSS_CUR_TIME=$(date -d "$(echo "$RES" | jq ".[$i].datetime")" "+%s")
+		if [ $SELFOSS_CUR_TIME -gt $SELFOSS_LAST ]; then
+			notify-send "$(echo "$RES" | jq ".[$i].datetime")"
+			SELFOSS_LAST=$SELFOSS_CUR_TIME
+		fi
+	done
+	
+	echo "$SELFOSS_LAST" > $SELFOSS_TEMP
 }
