@@ -1,8 +1,20 @@
 JAVA_LIB_PATH=~/Dropbox/Programming/Java/lib
 JAVA_APACHE_LIB_PATH=$JAVA_LIB_PATH/apache
 
-CLASSPATH=.:./bin:jrisk/server/lib/mysql-connector-java-5.1.24-bin.jar:/home/nicola/Dropbox/Programming/Java/BitBucket/jrisk/jrisk/client/lib/jfxrt.jar:$JAVA_LIB_PATH/jgrapht-0.8.3/jgrapht-jdk1.6.jar:$JAVA_APACHE_LIB_PATH/commons-math3-3.2/commons-math3-3.2.jar:$JAVA_APACHE_LIB_PATH/commons-net-3.3/commons-net-3.3.jar:$JAVA_LIB_PATH/org.json/org.json.jar:$JAVA_APACHE_LIB_PATH/commons-io-2.4/commons-io-2.4.jar:$JAVA_LIB_PATH/jline-1.0.jar
+#CLASSPATH=.:./bin:jrisk/server/lib/mysql-connector-java-5.1.24-bin.jar:/home/nicola/Dropbox/Programming/Java/BitBucket/jrisk/jrisk/client/lib/jfxrt.jar:$JAVA_LIB_PATH/jgrapht-0.8.3/jgrapht-jdk1.6.jar:$JAVA_APACHE_LIB_PATH/commons-math3-3.2/commons-math3-3.2.jar:$JAVA_APACHE_LIB_PATH/commons-net-3.3/commons-net-3.3.jar:$JAVA_LIB_PATH/org.json/org.json.jar:$JAVA_APACHE_LIB_PATH/commons-io-2.4/commons-io-2.4.jar:$JAVA_LIB_PATH/jline-1.0.jar
+
+
+CLASSPATH=.:./bin
+
+for jar in $(ls ~/Dropbox/Programming/Java/lib/jars/*.jar)
+do
+	CLASSPATH=${CLASSPATH}:${jar}
+done
+
+
 export CLASSPATH
+
+
 
 PATH=$PATH:$HOME/.myapp/omnetpp-4.3.1/bin
 export PATH
