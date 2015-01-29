@@ -91,3 +91,7 @@ alias dev-ruby="cd ~/Dropvox/Programming/Ruby"
 # apps
 alias intellij="nohup ~/.opt/idea-IC-133.696/bin/idea.sh &"
 alias minecraft="nohup ~/Dropbox/Minecraft/Minecraft.jar &"
+
+# mount local machine
+alias mount-lamp="sshfs www-data@lamp.vps:/var/www ~/.remote_mount"
+alias umount-lamp="fusermount -u ~/.remote-mount/"
