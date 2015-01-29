@@ -90,3 +90,4 @@ alias dev-ruby="cd ~/Dropvox/Programming/Ruby"
 
 # apps
 alias intellij="nohup ~/.opt/idea-IC-133.696/bin/idea.sh &"
+alias minecraft="nohup ~/Dropbox/Minecraft/Minecraft.jar &"
