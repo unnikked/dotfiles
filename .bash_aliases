@@ -90,7 +90,7 @@ alias dev-ruby="cd ~/Dropvox/Programming/Ruby"
 
 # apps
 alias intellij="nohup ~/.opt/idea-IC-133.696/bin/idea.sh &"
-alias minecraft="nohup ~/Dropbox/Minecraft/Minecraft.jar &"
+alias minecraft="nohup java -jar ~/Dropbox/Minecraft/Minecraft.jar &"
 alias androidstudio="nohup /opt/android-studio/bin/studio.sh &"
 alias mendeley="nohup /opt/mendeleydesktop-1.13.3-linux-x86_64/bin/mendeleydesktop &"
 alias omnetpp="nohup ~/.opt/omnetpp-4.6/bin/omnetpp &"
