@@ -2,6 +2,7 @@
 
 ## SHELL UTILS
 alias rebash='source ~/.bashrc'
+alias dot-files='\cp .b* .v* ~/; rebash'
 alias timestamp="date +'%s'"
 
 # shell commands
