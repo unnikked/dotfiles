@@ -94,3 +94,5 @@ man() {
 
 # Whatis ?
 echo "Did you know that:"; whatis $(\ls /bin | shuf -n 1)
+
+[[ -f "/home/nicola/.config/autopackage/paths-bash" ]] && . "/home/nicola/.config/autopackage/paths-bash"

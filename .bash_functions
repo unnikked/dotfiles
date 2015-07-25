@@ -1,14 +1,6 @@
 #!/bin/bash
 
 
-function my_ps() { 
-	ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; 
-}
-
-function pp() { 
-	my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; 
-}
-
 function killps() {   # kill by process name
     local pid pname sig="-TERM"   # default signal
     if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
@@ -23,15 +15,6 @@ function killps() {   # kill by process name
             then kill $sig $pid
         fi
     done
-}
-
-function notify() {
-	if [ $# -ne 2 ]; then
-		echo "USAGE: $0 \"command\" \"message\""
-	fi
-
-	$1
-	notify-send "$2"
 }
 
 #extract all archives!
@@ -138,63 +121,6 @@ function ask() {
     esac
 }
 
-# Cloud Flare DNS Manager
-# Check https://github.com/unnikked/cloudflare-dns-manager
-
-function dns-create() {
-    if [ $# -lt 4 ]; then
-        echo "USAGE $0 [domain] [type] [zone_name] [service_mode] (ip address)"
-        return 1;
-    fi
-
-    if [ $# -eq 5 ]; then
-        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "CREATE" $1 $2 $3 $4 $5
-    else
-        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "CREATE" $1 $2 $3 $4 
-    fi
-    return $?
-}
-
-function dns-modify() {
-    if [ $# -lt 4 ]; then
-        echo "USAGE $0 [domain] [type] [zone_name] [service_mode] (ip address)"
-        return 1;
-    fi
-
-    if [ $# -eq 5 ]; then
-        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "MODIFY" $1 $2 $3 $4 $5
-    else
-        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "MODIFY" $1 $2 $3 $4 
-    fi
-    return $?
-}
-
-function dns-delete() {
-    if [ $# -lt 4 ]; then
-        echo "USAGE $0 [domain] [type] [zone_name] [service_mode] (ip address)"
-        return 1;
-    fi
-
-    if [ $# -eq 5 ]; then
-        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "DELETE" $1 $2 $3 $4 $5
-    else
-        dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "DELETE" $1 $2 $3 $4 
-    fi
-    return $?
-}
-
-function dns-list-all() {
-    if [ $# -ne 1 ]; then
-        echo "USAGE $0 [domain]"
-        return 1;
-    fi
-
-    dyndns $CLOUDFLARE_EMAIL $CLOUDFLARE_KEY "LISTALL" $1 A a 0 "NONE"
-  	return $?
-}
-
-#
-
 function count-bash-lines() { # prototipe
     if [ $# -ne 1 ]; then
         echo "USAGE $0 [file.sh]"
@@ -221,7 +147,7 @@ function speak() {
 }
 
 # ORIGINAL http://www.reddit.com/r/bash/comments/245t3e/sharing_useful_functions/ch3zfbg
-function battery(){ 
+function battery() { 
     local CAPACITY="$(cat /sys/class/power_supply/BAT0/capacity)%"
     local TIME=$(upower --show-info /org/freedesktop/UPower/devices/battery_BAT0 | grep --color=always "time to \(full\|empty\)")
 
@@ -239,31 +165,4 @@ function battery(){
 	    echo "$TIME" | trim
             ;;
     esac
-}
-
-# Selfoss new articles notifyer
-
-function check_selfoss() {
-	local SELFOSS_TEMP=~/.selfoss
-	if [ ! -f $SELFOSS_TEMP ]; then 
-		echo "1322211600" > $SELFOSS_TEMP	
-	fi
-	local SELFOSS_LAST=$(\cat $SELFOSS_TEMP)
-	local RES=$(curl -s -GET "http://selfoss.unnikked.tk/items" \
-			-d "username=unnikked" \
-			-d "password=gli28bu74S" \
-			-d "type=unread" \
-			-d "items=200")
-	local SELFOSS_RES_ITEMS=$(echo "$RES" | jq '.[]')
-	echo $SELFOSS_RES_ITEMS
-	
-	for i in $(seq 200); do 
-		local SELFOSS_CUR_TIME=$(date -d "$(echo "$RES" | jq ".[$i].datetime")" "+%s")
-		if [ $SELFOSS_CUR_TIME -gt $SELFOSS_LAST ]; then
-			notify-send "$(echo "$RES" | jq ".[$i].datetime")"
-			SELFOSS_LAST=$SELFOSS_CUR_TIME
-		fi
-	done
-	
-	echo "$SELFOSS_LAST" > $SELFOSS_TEMP
 }
