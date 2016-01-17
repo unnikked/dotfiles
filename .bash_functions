@@ -17,39 +17,6 @@ function killps() {   # kill by process name
     done
 }
 
-#extract all archives!
-function extract () {
-   if [ -f $1 ] ; then
-       case $1 in
-            *.tar.bz2)  tar xvjf $1 ;;
-            *.tar.gz)   tar xvzf $1 ;;
-            *.tar.xz)   tar Jxvf $1 ;;
-            *.bz2)      bunzip2 $1 ;;
-            *.rar)      unrar x $1 ;;
-            *.gz)       gunzip $1 ;;
-            *.tar)      tar xvf $1 ;;
-            *.tbz2)     tar xvjf $1 ;;
-            *.tgz)      tar xvzf $1 ;;
-            *.zip)      unzip $1 ;;
-            *.Z)        uncompress ;;
-            *.7z)       7z x $1 ;;
-            *)          echo "don't know how to extract '$1'..." ;;
-       esac
-   else
-       echo "'$1' is not a valid file!"
-   fi
-}
-
-# Creates an archive (*.tar.gz) from given directory.
-function maketar() { 
-	tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"; 
-}
-
-# Create a ZIP archive of a file or folder.
-function makezip() { 
-	zip -r "${1%%/}.zip" "$1" ; 
-}
-
 #cli calculator
 function calc () {
     awk "BEGIN { print $* ; }"
@@ -107,11 +74,6 @@ function java-compile() {
 	javac -d ./bin $@
     fi
 }
-    
-
-function sprunge() {
-	\cat $1 | curl -F 'sprunge=<-' http://sprunge.us
-}
 
 function ask() {
     echo -n "$@" '[y/n] ' ; read ans
@@ -119,16 +81,6 @@ function ask() {
         y*|Y*) return 0 ;;
         *) return 1 ;;
     esac
-}
-
-function count-bash-lines() { # prototipe
-    if [ $# -ne 1 ]; then
-        echo "USAGE $0 [file.sh]"
-        return 1;
-    fi
-
-    calc $(\cat "$1" | wc -l) - $(\cat "$1" | egrep "^#" | wc -l)
-    return 0
 }
 
 function speak() {
@@ -144,25 +96,4 @@ function speak() {
         http://translate.google.com/translate_tts \
         | $player #&
     return $?
-}
-
-# ORIGINAL http://www.reddit.com/r/bash/comments/245t3e/sharing_useful_functions/ch3zfbg
-function battery() { 
-    local CAPACITY="$(cat /sys/class/power_supply/BAT0/capacity)%"
-    local TIME=$(upower --show-info /org/freedesktop/UPower/devices/battery_BAT0 | grep --color=always "time to \(full\|empty\)")
-
-    case "$(\cat /sys/class/power_supply/BAT0/status)" in
-        Discharging)
-            echo "Discharging ~ $CAPACITY"
-	    echo "$TIME" | trim
-            ;;
-        Charging)
-            echo "Charging ~ $CAPACITY"
-	    echo "$TIME" | trim
-            ;;
-        *)
-            echo "Fully charged ~ $CAPACITY"
-	    echo "$TIME" | trim
-            ;;
-    esac
 }

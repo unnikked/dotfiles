@@ -13,7 +13,6 @@ alias tree='tree -ahF -C'
 alias df="df -Tha --total"
 alias du="du -ach | sort -h"
 alias cat='pygmentize -O style=monokai -f console256 -g' # Syntax highlighted output when cat ~ require python-pygments
-alias cat-html="sed 's/<[^>]*>//g'"
 
 alias rm='rm -i'
 alias cp='cp -i'
@@ -45,8 +44,7 @@ alias get-ip="resolveip -s "$1""
 #utils
 alias trim="sed -e 's/^[[:space:]]*//g' -e 's/[[:space:]]*\$//g'" # Trim / remove leading and trailing whitespaces
 
-alias randap="< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};echo;"
-alias ?='cowsay -f $(ls /usr/share/cowsay/cows | shuf -n 1 | cut -d. -f1) $(whatis $(ls /bin) 2>/dev/null | shuf -n 1)'
+alias randap="< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;"
 
 # HTTP serve the current directory to 0.0.0.0 and safety port 8765
 # Detect python version
@@ -64,10 +62,6 @@ alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias netlisteners='lsof -i -P | grep LISTEN'
 
 # Misc
-#alias commands-freq='history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n10'
-alias random-fact="elinks -dump randomfunfacts.com | sed -n '/^| /p' | tr -d \|" 
-alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
-
 alias strtolower='python -c "import sys; s=sys.argv[1]; print s.lower()"'
 
 # apps
