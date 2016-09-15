@@ -7,7 +7,6 @@ alias timestamp="date +'%s'"
 
 # shell commands
 alias ls='ls --color=always -F --group-directories-first'
-alias lo="ls -lha --color=always -F --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\"%0o \",k);print}'"
 alias ll='ls -lhA'
 alias tree='tree -ahF -C'
 alias df="df -Tha --total"
@@ -35,16 +34,11 @@ alias urldecode='python -c "import sys, urllib as ul; print ul.unquote_plus(sys.
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1])"'
 
 alias list-sockets='lsof -i' # List Sockets in use
-alias list-open-ports='netstat -tulanp' 
+alias list-open-ports='netstat -tulanp'
 alias list-tcp-open-ports='netstat -anop | grep -i list | grep tcp'
-
-alias get-ip="resolveip -s "$1""
-
 
 #utils
 alias trim="sed -e 's/^[[:space:]]*//g' -e 's/[[:space:]]*\$//g'" # Trim / remove leading and trailing whitespaces
-
-alias randap="< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;"
 
 # HTTP serve the current directory to 0.0.0.0 and safety port 8765
 # Detect python version

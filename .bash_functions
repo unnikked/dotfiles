@@ -47,10 +47,10 @@ function execute-over-ssh() {
         return 1
     else
         servers=(${=1})
-        for server in $servers; do
+        for server in "${servers[@]}"; do
             echo ""
             echo "----> Executing $2 on $server"
-            ssh $server "$2" 
+            ssh $server "$2"
             echo ""
         done
         return 0
@@ -59,19 +59,19 @@ function execute-over-ssh() {
 
 
 function define() {
-    curl -s http://definefor.me/getDefinition.php?word=$(tr ' ' '+' <<< "$@") | \
+    curl -s "http://definefor.me/getDefinition.php?word=$(tr ' ' '+' <<< "$@")" | \
     grep -A2 definition | grep -v definition | \
     grep -e '[a-zA-Z]' | sed -e 's/^[ \t]*//' | \
-    grep -ve '</div>' 
+    grep -ve '</div>'
 }
 
 function java-compile() {
-    if [ ! -d ./bin ]; then 
+    if [ ! -d ./bin ]; then
 	mkdir ./bin
-	javac -d ./bin $@
-    else 
+	javac -d ./bin "$@"
+    else
 	rm -Rf ./bin/*
-	javac -d ./bin $@
+	javac -d ./bin "$@"
     fi
 }
 
@@ -96,4 +96,13 @@ function speak() {
         http://translate.google.com/translate_tts \
         | $player #&
     return $?
+}
+
+function lo() {
+  ls -lha --color=always -F --group-directories-first | \
+  awk '{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(\"%0o \",k);print}'
+}
+
+function randap() {
+  < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;
 }

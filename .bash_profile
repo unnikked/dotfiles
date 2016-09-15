@@ -1,13 +1,13 @@
+#!/bin/bash
+
 CLASSPATH=.:./bin
 export CLASSPATH
 
-PATH=$PATH:$HOME/.myapp/omnetpp-4.3.1/bin
+PATH=$PATH:$HOME
 export PATH
 
-export TCL_LIBRARY=/usr/share/tcltk/tcl8.5
-
 # Prompt
-# for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done   
+# for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done
 c_lg="\[\033[38;5;141m\]" # lines command ok
 c_lf="\[\033[38;5;196m\]" # lines command fail
 c_us="\[\033[38;5;106m\]" # user
@@ -20,7 +20,8 @@ c_xx="\[\e[0m\]" # reset
 # truncated working directory
 twd() {
     local result=$PWD
-    local dynamic="`whoami`$HOSTNAME" # for calculating max pwd length
+    local dynamic
+    dynamic="`whoami`$HOSTNAME" # for calculating max pwd length
     local len_extra_chars=5 # length of misc characters and spaces on first line
     local len_term=${COLUMNS:-80} # if no variable $COLUMNS use 80
     local len_max_pwd=$((len_term-$len_extra_chars-${#dynamic}))
@@ -67,17 +68,17 @@ PROMPT_COMMAND=get_ps1
 # Get colors in manual pages
 man() {
     env \
-    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-    LESS_TERMCAP_md=$(printf "\e[1;31m") \
-    LESS_TERMCAP_me=$(printf "\e[0m") \
-    LESS_TERMCAP_se=$(printf "\e[0m") \
-    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-    LESS_TERMCAP_ue=$(printf "\e[0m") \
-    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    LESS_TERMCAP_mb="$(printf "\e[1;31m")" \
+    LESS_TERMCAP_md="$(printf "\e[1;31m")" \
+    LESS_TERMCAP_me="$(printf "\e[0m")" \
+    LESS_TERMCAP_se="$(printf "\e[0m")" \
+    LESS_TERMCAP_so="$(printf "\e[1;44;33m")" \
+    LESS_TERMCAP_ue="$(printf "\e[0m")" \
+    LESS_TERMCAP_us="$(printf "\e[1;32m")" \
     man "$@"
 }
 
 # Whatis ?
-echo "Did you know that:"; whatis $(\ls /bin | shuf -n 1)
+echo "Did you know that:"; whatis "$(\ls /bin | shuf -n 1)"
 
 [[ -f "/home/nicola/.config/autopackage/paths-bash" ]] && . "/home/nicola/.config/autopackage/paths-bash"
