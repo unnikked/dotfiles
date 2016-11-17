@@ -3,7 +3,9 @@
 CLASSPATH=.:./bin
 export CLASSPATH
 
-PATH=$PATH:$HOME
+COMPOSER=/home/nicola/.composer/vendor/bin/
+
+PATH=$PATH:$HOME:$COMPOSER
 export PATH
 
 # Prompt
